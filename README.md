@@ -41,30 +41,6 @@ The primary objectives of this repository are to:
 
 ---
 
-## Repository Structure
-
-```
-GEO-Transcriptomic-Analysis/
-│
-├── data/
-│   ├── raw/
-│   └── processed/
-│
-├── scripts/
-│   ├── microarray_analysis.R
-│   └── rnaseq_analysis.R
-│
-├── results/
-│   ├── figures/
-│   ├── tables/
-│   └── DEG_results/
-│
-├── README.md
-└── LICENSE
-```
-
----
-
 ## Analysis Workflow
 
 ### Microarray Analysis
