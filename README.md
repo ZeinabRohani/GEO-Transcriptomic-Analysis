@@ -7,6 +7,26 @@ This repository presents reproducible transcriptomic analysis workflows implemen
 The repository was developed as part of a bioinformatics portfolio to demonstrate practical experience in transcriptomic data analysis using widely adopted Bioconductor packages and reproducible computational workflows.
 
 ---
+## Related Publication
+
+The workflow implemented in this repository is based on the transcriptomic analysis strategy used in the following peer-reviewed publication.
+
+**Rohani Z., Sazegar H., Rahimi E.** (2024). *Unlocking the potential of Escherichia coli K-12: A novel approach for malignancy reduction in colorectal cancer through gene expression modulation*. **Gene**, 906, 148266.
+
+**DOI:** https://doi.org/10.1016/j.gene.2024.148266
+
+### Relationship to this Repository
+
+This repository provides a reproducible and generalized implementation of the transcriptomic analysis workflow used in the study, including:
+
+* Downloading public GEO datasets
+* Microarray preprocessing
+* Differential gene expression analysis using **limma**
+* RNA-seq differential expression analysis using **edgeR** and **limma-voom**
+* Publication-quality visualization (Volcano plots, Heatmaps, PCA)
+* Reproducible analysis workflows implemented in **R/Bioconductor**
+
+The repository is intended as an educational and research resource demonstrating reproducible transcriptomic analysis pipelines and is not an exact reproduction of all analyses reported in the publication.
 
 ## Project Objectives
 
