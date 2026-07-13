@@ -2,148 +2,201 @@
 
 ## Overview
 
-This repository presents reproducible transcriptomic analysis workflows implemented in **R** and **Bioconductor** for the analysis of publicly available **Gene Expression Omnibus (GEO)** datasets. The project demonstrates complete pipelines for gene expression analysis, including data retrieval, preprocessing, quality assessment, normalization, differential gene expression analysis, and publication-quality visualization.
+This repository presents a reproducible bioinformatics workflow for the analysis of public microarray gene expression datasets obtained from the **NCBI Gene Expression Omnibus (GEO)** using **R** and **Bioconductor**.
 
-The repository was developed as part of a bioinformatics portfolio to demonstrate practical experience in transcriptomic data analysis using widely adopted Bioconductor packages and reproducible computational workflows.
+The project demonstrates a complete transcriptomic analysis pipeline, including GEO data retrieval, microarray preprocessing, differential gene expression analysis using **limma**, functional enrichment analysis, and publication-quality visualization.
+
+This repository was developed as part of my bioinformatics portfolio to demonstrate practical experience in transcriptomic data analysis using reproducible computational workflows and widely adopted Bioconductor packages.
 
 ---
-## Related Publication
+
+# Related Publication
 
 The workflow implemented in this repository is based on the transcriptomic analysis strategy used in the following peer-reviewed publication.
 
-**Rohani Z., Sazegar H., Rahimi E.** (2024). *Unlocking the potential of Escherichia coli K-12: A novel approach for malignancy reduction in colorectal cancer through gene expression modulation*. **Gene**, 906, 148266.
+**Rohani Z., Sazegar H., Rahimi E.** (2024).
+
+*Unlocking the potential of Escherichia coli K-12: A novel approach for malignancy reduction in colorectal cancer through gene expression modulation.*
+
+**Gene**, 906, 148266.
 
 **DOI:** https://doi.org/10.1016/j.gene.2024.148266
 
-### Relationship to this Repository
+---
 
-This repository provides a reproducible and generalized implementation of the transcriptomic analysis workflow used in the study, including:
+## Relationship to this Repository
 
-* Downloading public GEO datasets
+This repository provides a generalized and reproducible implementation of the transcriptomic analysis workflow used in the study, including:
+
+* Downloading public GEO microarray datasets
+* Expression matrix extraction
 * Microarray preprocessing
 * Differential gene expression analysis using **limma**
-* RNA-seq differential expression analysis using **edgeR** and **limma-voom**
-* Publication-quality visualization (Volcano plots, Heatmaps, PCA)
+* Functional enrichment analysis using **Gene Ontology (GO)** and **KEGG pathways**
+* Publication-quality visualization
 * Reproducible analysis workflows implemented in **R/Bioconductor**
 
-The repository is intended as an educational and research resource demonstrating reproducible transcriptomic analysis pipelines and is not an exact reproduction of all analyses reported in the publication.
+This repository is intended as an educational and research resource demonstrating reproducible transcriptomic analysis workflows and is **not intended to reproduce every analysis performed in the publication**.
 
-## Project Objectives
+---
+
+# Project Objectives
 
 The primary objectives of this repository are to:
 
-* Retrieve publicly available transcriptomic datasets from GEO.
-* Perform preprocessing and quality assessment of gene expression data.
-* Normalize expression values using appropriate statistical methods.
+* Retrieve publicly available GEO microarray datasets.
+* Perform preprocessing of gene expression data.
+* Normalize expression values using standard statistical methods.
 * Identify differentially expressed genes (DEGs).
+* Perform functional enrichment analysis.
 * Generate publication-quality visualizations.
-* Produce reproducible analysis pipelines suitable for downstream biological interpretation.
+* Provide a reproducible transcriptomic analysis workflow.
 
 ---
 
-## Analysis Workflow
+# Analysis Workflow
 
-### Microarray Analysis
+```text
+GEO Dataset
+      │
+      ▼
+Download GEO Data
+      │
+      ▼
+Microarray Preprocessing
+      │
+      ▼
+Differential Expression Analysis (limma)
+      │
+      ▼
+Functional Enrichment Analysis
+      │
+      ▼
+Visualization
+```
 
-The microarray workflow includes:
+---
 
-* GEO dataset retrieval using **GEOquery**
-* Expression matrix extraction
-* Data preprocessing
-* Log2 transformation (when required)
+# Workflow Description
+
+## 1. Download GEO Data
+
+**Script**
+
+`01_download_GEO_data.R`
+
+This script downloads a GEO microarray dataset using **GEOquery** and extracts:
+
+* Expression matrix
+* Phenotype data
+* Feature annotation
+
+The extracted files are saved for downstream analysis.
+
+---
+
+## 2. Microarray Preprocessing
+
+**Script**
+
+`02_microarray_preprocessing.R`
+
+This step prepares the expression matrix for downstream analysis by:
+
+* Assessing expression value distribution
+* Applying log2 transformation (when required)
+* Removing missing values
+* Performing quantile normalization
+* Generating quality control boxplots
+
+---
+
+## 3. Differential Expression Analysis
+
+**Script**
+
+`03_limma_analysis.R`
+
+Differential gene expression analysis is performed using the **limma** package.
+
+The workflow includes:
+
 * Experimental design matrix construction
-* Linear modeling using **limma**
-* Empirical Bayes statistical analysis
-* Differentially expressed gene (DEG) identification
-* Probe annotation
-* Export of analysis results
+* Linear model fitting
+* Contrast analysis
+* Empirical Bayes moderation
+* Benjamini–Hochberg multiple testing correction
+* Identification of significantly differentially expressed genes
 
 ---
 
-### RNA-seq Analysis
+## 4. Functional Enrichment Analysis
 
-The RNA-seq workflow includes:
+**Script**
 
-* Import of raw count matrices
-* Low-expression filtering using **edgeR**
-* Library size normalization using **TMM**
-* Experimental design matrix construction
-* Mean-variance modeling using **voom**
-* Linear modeling using **limma**
-* Empirical Bayes statistics
-* Differential gene expression analysis
-* Export of normalized expression values and DEG tables
+`04_functional_enrichment.R`
 
----
+Biological interpretation of differentially expressed genes is performed using **clusterProfiler**.
 
-## Data Visualization
+Analyses include:
 
-The repository includes scripts for generating publication-quality figures, including:
-
-* Volcano plots (**EnhancedVolcano**)
-* Heatmaps (**pheatmap**)
-* Boxplots for quality assessment
-* Expression distribution plots
-* Differential expression summaries
+* Gene Ontology (GO) Biological Process enrichment
+* KEGG pathway enrichment
 
 ---
 
-## Software and Packages
+## 5. Visualization
 
-### Programming Language
+**Script**
 
-* R
+`05_visualization.R`
 
-### Bioconductor Packages
+Publication-quality figures are generated for interpretation of transcriptomic results.
+
+The visualization workflow includes:
+
+* Volcano Plot
+* Heatmap
+* GO Dotplot
+* KEGG Dotplot
+
+---
+
+# R Packages
+
+The analysis pipeline uses the following R packages:
+
+## Bioconductor
 
 * GEOquery
-* limma
-* edgeR
-* affy
 * Biobase
-* EnhancedVolcano
+* limma
+* clusterProfiler
+* org.Hs.eg.db
 
-### CRAN Packages
+## CRAN
 
 * ggplot2
 * pheatmap
 
 ---
 
-## Workflow Summary
 
-1. Download GEO datasets
-2. Import expression data
-3. Perform quality assessment
-4. Normalize expression values
-5. Construct the experimental design matrix
-6. Fit linear models
-7. Identify differentially expressed genes
-8. Generate visualizations
-9. Export analysis results
+# Applications
 
----
-
-## Reproducibility
-
-The workflows are organized as modular R scripts following reproducible research principles. File paths are project-relative, enabling execution across different operating systems with minimal modification. All statistical analyses rely on established Bioconductor methodologies widely used in transcriptomic research.
-
----
-
-## Applications
-
-These workflows can be adapted for a variety of transcriptomic studies, including:
+This workflow can be adapted for a wide range of transcriptomic studies, including:
 
 * Differential gene expression analysis
 * Comparative transcriptomics
 * Biomarker discovery
-* Candidate gene prioritization
-* Functional genomics studies
-* Exploratory analysis of publicly available transcriptomic datasets
+* Functional genomics
+* Gene Ontology enrichment analysis
+* KEGG pathway analysis
+* Exploratory analysis of public GEO microarray datasets
 
 ---
 
-## Requirements
+# Requirements
 
 The analyses were developed using:
 
@@ -151,7 +204,7 @@ The analyses were developed using:
 * Bioconductor
 * RStudio (recommended)
 
-Install required packages before running the scripts:
+Install the required packages before running the scripts:
 
 ```r
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -159,11 +212,10 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 
 BiocManager::install(c(
     "GEOquery",
-    "limma",
-    "edgeR",
-    "affy",
     "Biobase",
-    "EnhancedVolcano"
+    "limma",
+    "clusterProfiler",
+    "org.Hs.eg.db"
 ))
 
 install.packages(c(
@@ -174,17 +226,23 @@ install.packages(c(
 
 ---
 
-## Citation
+# Reproducibility
 
-If you use these workflows in your research, please cite:
+The workflow is organized as modular R scripts following reproducible research principles. Raw datasets are downloaded directly from the NCBI Gene Expression Omnibus (GEO), and all downstream analyses can be reproduced by executing the scripts in sequential order.
 
-* The original GEO datasets used in the analyses.
+---
+
+# Citation
+
+If you use this workflow in your research, please cite:
+
+* The original GEO datasets.
 * The corresponding Bioconductor packages.
 * R and Bioconductor.
 
 ---
 
-## Author
+# Author
 
 **Zeinab Rohani**
 
@@ -194,12 +252,12 @@ GitHub: https://github.com/ZeinabRohani
 
 ---
 
-## License
+# License
 
-This repository is released for research and educational purposes.
+This project is distributed under the **MIT License**.
 
 ---
 
-## Acknowledgements
+# Acknowledgements
 
-This project makes use of publicly available transcriptomic datasets deposited in the NCBI Gene Expression Omnibus (GEO) and relies on the Bioconductor ecosystem for reproducible statistical analysis of high-throughput genomic data.
+This project makes use of publicly available transcriptomic datasets deposited in the **NCBI Gene Expression Omnibus (GEO)** and relies on the **Bioconductor** ecosystem for reproducible statistical analysis of high-throughput gene expression data.
