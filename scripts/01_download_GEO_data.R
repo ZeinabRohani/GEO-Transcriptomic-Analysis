@@ -1,24 +1,33 @@
 ############################################################
-# GEO-Transcriptomic-Analysis
-# Script: 01_download_GEO_data.R
+# Project: GEO-Transcriptomic-Analysis
+# Script : 01_download_GEO_data.R
 #
-# Download GEO dataset and extract expression,
-# phenotype and annotation data.
+# Description:
+# Download a GEO dataset and extract:
+# - Expression matrix
+# - Phenotype data
+# - Feature annotation
 ############################################################
 
+## Load packages
 library(GEOquery)
 library(Biobase)
 
-## Dataset
+## GEO accession number
 GEO_ID <- "GSE50040"
 
-## Download dataset
+## Create directories
+dir.create("data", showWarnings = FALSE)
+dir.create("results", showWarnings = FALSE)
+
+## Download GEO dataset
 gset <- getGEO(
   GEO = GEO_ID,
   GSEMatrix = TRUE,
   AnnotGPL = TRUE
 )
 
+## Select the first ExpressionSet
 gset <- gset[[1]]
 
 ## Extract data
@@ -26,35 +35,37 @@ expression_matrix <- exprs(gset)
 phenotype_data <- pData(gset)
 feature_annotation <- fData(gset)
 
-## Create folders
-dir.create("data", showWarnings = FALSE)
-dir.create("results", showWarnings = FALSE)
-
-## Save files
+## Save expression matrix
 write.table(
   expression_matrix,
-  "data/expression_matrix.txt",
+  file = "data/expression_matrix.txt",
   sep = "\t",
-  quote = FALSE
+  quote = FALSE,
+  col.names = NA
 )
 
+## Save phenotype data
 write.table(
   phenotype_data,
-  "data/phenotype_data.txt",
+  file = "data/phenotype_data.txt",
   sep = "\t",
   quote = FALSE
 )
 
+## Save feature annotation
 write.table(
   feature_annotation,
-  "data/feature_annotation.txt",
+  file = "data/feature_annotation.txt",
   sep = "\t",
   quote = FALSE
 )
 
-## Summary
+## Dataset summary
 cat("\n")
-cat("Dataset:", GEO_ID, "\n")
-cat("Genes:", nrow(expression_matrix), "\n")
-cat("Samples:", ncol(expression_matrix), "\n")
-cat("Download completed.\n")
+cat("=====================================\n")
+cat("GEO DATA DOWNLOAD COMPLETED\n")
+cat("=====================================\n")
+cat("Dataset :", GEO_ID, "\n")
+cat("Genes   :", nrow(expression_matrix), "\n")
+cat("Samples :", ncol(expression_matrix), "\n")
+cat("=====================================\n")
